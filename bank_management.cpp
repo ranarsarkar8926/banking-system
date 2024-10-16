@@ -3,11 +3,9 @@
 #include <vector>
 #include <cctype>
 #include <unordered_set>
-#include <cstdlib> // For rand() and srand()
-#include <ctime>   // For time()
+#include <cstdlib> 
+#include <ctime> 
 using namespace std;
-
-// Bank Account Class
 class BankAccount
 {
 private:
@@ -15,9 +13,7 @@ private:
     string accountHolderName;
     float balance;
     string atmPin;
-
 public:
-    // Constructor to initialize account
     BankAccount(int accNum, string name, string pin, float bal = 0.0)
     {
         accountNumber = accNum;
@@ -25,16 +21,12 @@ public:
         balance = bal;
         atmPin = pin;
     }
-
-    // Method to display account details (only for bank authority)
     void displayDetails() const
     {
         cout << "Account Number: " << accountNumber << endl;
         cout << "Account Holder: " << accountHolderName << endl;
         cout << "Balance: $" << balance << endl;
     }
-
-    // Method to deposit money
     void deposit(float amount)
     {
         if (amount > 0)
@@ -47,8 +39,6 @@ public:
             cout << "Invalid deposit amount!" << endl;
         }
     }
-
-    // Method to withdraw money
     bool withdraw(float amount)
     {
         if (amount > 0 && amount <= balance)
@@ -63,15 +53,11 @@ public:
             return false;
         }
     }
-
-    // Method to set ATM PIN (only bank authority can set)
     void setAtmPin(string pin)
     {
         atmPin = pin;
         cout << "ATM PIN set successfully." << endl;
     }
-
-    // ATM functionality: verify pin and get account balance
     bool verifyAtmPin(string pin) const
     {
         return pin == atmPin;
@@ -87,33 +73,27 @@ public:
         return accountNumber;
     }
 };
-
-// Bank Class to manage multiple accounts
 class Bank
 {
 private:
     vector<BankAccount> accounts;
-    unordered_set<int> usedAccountNumbers; // To track used account numbers
-
-    // Helper function to generate a unique 6-digit account number
+    unordered_set<int> usedAccountNumbers; 
     int generateUniqueAccountNumber()
     {
         int accNum;
         do
         {
-            accNum = rand() % 900000 + 100000; // Generates a 6-digit number between 100000 and 999999
+            accNum = rand() % 900000 + 100000;
         } while (usedAccountNumbers.find(accNum) != usedAccountNumbers.end());
-        usedAccountNumbers.insert(accNum); // Mark this account number as used
+        usedAccountNumbers.insert(accNum);
         return accNum;
     }
 
 public:
     Bank()
     {
-        srand(time(0)); // Initialize random seed for account number generation
+        srand(time(0)); 
     }
-
-    // Method to create a new account
     void createAccount(string name, string pin, float initialDeposit = 0.0)
     {
         int accNum = generateUniqueAccountNumber();
@@ -121,8 +101,6 @@ public:
         accounts.push_back(newAccount);
         cout << "Account created successfully! Your Account Number is: " << accNum << endl;
     }
-
-    // Method to display account details by account number (for bank authority)
     void displayAccount(int accNum)
     {
         for (const auto &acc : accounts)
@@ -135,8 +113,6 @@ public:
         }
         cout << "Account not found!" << endl;
     }
-
-    // Method to deposit to an account
     void depositToAccount(int accNum, float amount)
     {
         for (auto &acc : accounts)
@@ -149,8 +125,6 @@ public:
         }
         cout << "Account not found!" << endl;
     }
-
-    // Method to withdraw from an account
     void withdrawFromAccount(int accNum, float amount)
     {
         for (auto &acc : accounts)
@@ -163,8 +137,6 @@ public:
         }
         cout << "Account not found!" << endl;
     }
-
-    // Method to set ATM PIN (bank authority)
     void setAtmPinForAccount(int accNum, string pin)
     {
         for (auto &acc : accounts)
@@ -178,7 +150,6 @@ public:
         cout << "Account not found!" << endl;
     }
 
-    // ATM functionality: User login and access
     void atmLogin(int accNum, string pin)
     {
         for (auto &acc : accounts)
@@ -199,7 +170,6 @@ public:
         cout << "Account not found!" << endl;
     }
 
-    // ATM operations (check balance, withdraw)
     void atmOperations(BankAccount &account)
     {
         int choice;
@@ -236,7 +206,6 @@ public:
     }
 };
 
-// Function to validate 4-digit ATM PIN
 bool validatePin(string pin)
 {
     if (pin.length() != 4)
@@ -249,7 +218,6 @@ bool validatePin(string pin)
     return true;
 }
 
-// Main function to simulate the banking system
 int main()
 {
     Bank bank;
